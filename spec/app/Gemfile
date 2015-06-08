@@ -1,0 +1,13 @@
+source 'https://rubygems.org'
+
+gem 'rake'
+
+gem 'activerecord', '>= 3.1', :require => 'active_record'
+gem 'sqlite3'
+gem "sinatra-resource-json-api", git: "https://github.com/artbq/sinatra-resource-json-api.git"
+
+gem 'rspec', :group => 'test'
+gem 'rack-test', :require => 'rack/test', :group => 'test'
+
+gem 'padrino', '0.13.0.beta2'
+
