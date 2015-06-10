@@ -4,6 +4,17 @@ require "user"
 
 describe User do
 
+  describe "validates" do
+    let(:user) { User.new(data) }
+
+    subject { user }
+
+    context "presence" do
+      let(:data) { {age: 600} }
+      it { should_not be_valid }
+    end
+  end
+
   describe ".new" do
     let(:user) { User.new(data) }
 
