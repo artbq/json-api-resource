@@ -15,6 +15,7 @@ describe User do
     end
   end
 
+
   describe ".new" do
     let(:user) { User.new(data) }
 
@@ -34,6 +35,85 @@ describe User do
       specify { expect(user.age).to eq 600 }
       specify { expect(user.attributes[:name]).to eq "Deirdre Skye" }
       specify { expect(user.attributes[:age]).to eq 600 }
+    end
+  end
+
+
+  describe "requests" do
+
+    before(:each) { clean_db }
+
+
+    describe ".all" do
+
+      before(:each) do
+        create_list(:user, 3)
+      end
+
+      specify { expect(described_class.all.count).to eq 3 }
+      specify { expect(described_class.all.first.name).to eq "Deirdre Skye" }
+    end
+
+    describe ".find" do
+      let(:user) { create(:user) }
+
+      specify { expect(described_class.find(user.id).name).to eq user.name }
+      specify { expect(described_class.find(:foo)).to be_nil }
+    end
+
+
+    describe "#save" do
+
+      context "old record" do
+        let(:user) { create(:user) }
+
+        before(:each) do
+          user.name = name
+          user.save
+        end
+
+        context "when valid" do
+          let(:name) { "Foo" }
+
+          specify { expect(user.name).to eq "Foo" }
+          specify { expect(described_class.find(user.id).name).to eq "Foo" }
+        end
+
+        context "when invalid" do
+          let(:name) { nil }
+
+          specify { expect(user.errors[:name]).to be }
+          specify { expect(described_class.find(user.id).name).to eq "Deirdre Skye" }
+        end
+      end
+
+      context "new record" do
+        let(:user) { build(:user, data) }
+
+        context "when valid" do
+          let(:data) { {name: "Foo", age: 20} }
+
+          before(:each) do
+            user.save
+          end
+
+          specify { expect(user).to be_persisted }
+          specify { expect(user.id).to be }
+          specify { expect(described_class.find(user.id).name).to eq "Foo" }
+        end
+
+        context "when invalid" do
+          let(:data) { {name: nil} }
+
+          before(:each) do
+            user.save
+          end
+
+          specify { expect(user).to_not be_persisted }
+          specify { expect(user.id).to be_nil }
+          specify { expect(user.errors[:name]).to be }
+        end
+      end
     end
   end
 end
