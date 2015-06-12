@@ -3,6 +3,7 @@ require "active_model"
 require "json_api_resource/attributes"
 require "json_api_resource/get"
 require "json_api_resource/persistence"
+require "json_api_resource/request"
 
 module JsonApiResource
   class Base
@@ -12,6 +13,7 @@ module JsonApiResource
     include Attributes
     extend Get
     include Persistence
+    extend Request
 
     def initialize(data={})
       if data.is_a?(String)
