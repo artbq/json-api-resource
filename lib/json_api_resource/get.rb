@@ -4,13 +4,13 @@ require "typhoeus"
 module JsonApiResource
   module Get
 
-    def all(opts={})
-      r = where_with_pagination
+    def all(params={}, opts={})
+      r = get_list(params)
       opts[:with_pagination] ? r : r[:entries]
     end
 
     def where(query, opts={})
-      result = where_with_pagination(query)
+      result = get_list(query: query)
       opts[:with_pagination] ? result : result[:entries]
     end
 
@@ -31,8 +31,8 @@ module JsonApiResource
 
     private
 
-    def where_with_pagination(query={})
-      req = Typhoeus::Request.new(endpoint, method: :get, params: {query: query})
+    def get_list(params={})
+      req = Typhoeus::Request.new(endpoint, method: :get, params: params)
 
       req.on_complete do |res|
         case res.code
