@@ -9,6 +9,11 @@ module JsonApiResource
       opts[:with_pagination] ? r : r[:entries]
     end
 
+    def where(query, opts={})
+      result = where_with_pagination(query)
+      opts[:with_pagination] ? result : result[:entries]
+    end
+
     def find(id)
       req = Typhoeus::Request.new("#{endpoint}/#{id}", method: :get)
 

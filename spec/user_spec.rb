@@ -54,6 +54,23 @@ describe User do
       specify { expect(described_class.all.first.name).to eq "Deirdre Skye" }
     end
 
+    describe ".where" do
+
+      let!(:walter) { create(:user, name: "Walter") }
+      let!(:walter_jr) { create(:user, name: "Walter") }
+      let!(:skyler) { create(:user, name: "Skyler") }
+
+      context "=" do
+        let(:query) { {name: "Walter"} }
+
+        specify "returns correct entries" do
+          ids = described_class.where(query).map(&:id)
+          expect(ids).to include walter.id, walter_jr.id
+          expect(ids).to_not include skyler.id
+        end
+      end
+    end
+
     describe ".find" do
       let(:user) { create(:user) }
 
