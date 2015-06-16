@@ -50,6 +50,7 @@ module JsonApiResource
           self.persisted = true
           return true
         when 422
+          add_errors(JSON.parse(res.body)["errors"])
           return false
         else
           return false
@@ -72,6 +73,14 @@ module JsonApiResource
 
     def params_key
       self.class.to_s.underscore
+    end
+
+    def add_errors(data)
+      data.each do |attr, errs|
+        errs.each do |err|
+          errors.add(attr, err)
+        end
+      end
     end
   end
 end

@@ -6,7 +6,7 @@ class User < JsonApiResource::Base
 
   def_attributes :id, :name, :age
 
-  validates_presence_of :name, :age
+  validates_presence_of :age
 
   private
 

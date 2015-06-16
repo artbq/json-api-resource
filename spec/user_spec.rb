@@ -10,7 +10,7 @@ describe User do
     subject { user }
 
     context "presence" do
-      let(:data) { {age: 600} }
+      let(:data) { {name: "Foo"} }
       it { should_not be_valid }
     end
   end
