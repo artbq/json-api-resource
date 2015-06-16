@@ -4,13 +4,16 @@ module JsonApiResource
   module Attributes
 
     module ClassMethods
-      cattr_accessor :attributes
 
       def def_attributes(*attrs)
-        self.attributes = attrs
+        @attributes = attrs
         attrs.each do |attr|
           attr_accessor(attr)
         end
+      end
+
+      def attributes
+        @attributes
       end
     end
 
