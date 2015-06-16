@@ -65,6 +65,20 @@ module JsonApiResource
       save
     end
 
+    def destroy
+      req = Typhoeus::Request.new("#{endpoint}/#{id}", method: :delete)
+      req.on_complete do |res|
+        case res.code
+        when 204
+          self.persisted = false
+          self
+        else
+          false
+        end
+      end
+      req.run
+    end
+
     private
 
     def persisted=(v)

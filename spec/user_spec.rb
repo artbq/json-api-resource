@@ -132,6 +132,20 @@ describe User do
         end
       end
     end
+
+    describe "#destroy" do
+      let!(:user) { create(:user) }
+
+      specify "makes object not persisted" do
+        user.destroy
+        expect(user).to_not be_persisted
+      end
+
+      specify "deletes record from database" do
+        user.destroy
+        expect(User.find(user.id)).not_to be
+      end
+    end
   end
 end
 
