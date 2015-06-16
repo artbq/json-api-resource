@@ -14,8 +14,8 @@ module JsonApiResource
       opts[:with_pagination] ? result : result[:entries]
     end
 
-    def find(id)
-      req = Typhoeus::Request.new("#{endpoint}/#{id}", method: :get)
+    def find(id, params={})
+      req = Typhoeus::Request.new("#{endpoint}/#{id}", method: :get, params: params)
 
       req.on_complete do |res|
         case res.code
