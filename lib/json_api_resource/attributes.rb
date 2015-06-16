@@ -12,6 +12,13 @@ module JsonApiResource
         end
       end
 
+      def def_meta_attributes(*attrs)
+        @meta_attributes = attrs
+        attrs.each do |attr|
+          attr_accessor(attr)
+        end
+      end
+
       def attributes
         @attributes
       end
