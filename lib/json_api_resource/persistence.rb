@@ -30,16 +30,12 @@ module JsonApiResource
       if persisted?
         req = Typhoeus::Request.new(
             "#{endpoint}/#{id}",
-            method: :put,
-            headers: {"Content-Type" => content_type},
-            body: {params_key => attributes})
+            {body: {params_key => attributes}}.merge(update_params))
         success_code = 200
       else
         req = Typhoeus::Request.new(
             endpoint,
-            method: :post,
-            headers: {"Content-Type" => content_type},
-            body: {params_key => attributes})
+            {body: {params_key => attributes}}.merge(create_params))
         success_code = 201
       end
 
@@ -89,8 +85,18 @@ module JsonApiResource
       self.class.to_s.underscore
     end
 
-    def content_type
-      "application/x-www-form-urlencoded"
+    def update_params
+      {
+        method: :put,
+        headers: {"Content-Type" => 'application/x-www-form-urlencode'},
+      }
+    end
+
+    def create_params
+      {
+        method: :post,
+        headers: {"Content-Type" => 'application/x-www-form-urlencode'}
+      }
     end
 
     def add_errors(data)
