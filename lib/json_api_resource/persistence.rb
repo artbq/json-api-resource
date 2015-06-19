@@ -31,14 +31,14 @@ module JsonApiResource
         req = Typhoeus::Request.new(
             "#{endpoint}/#{id}",
             method: :put,
-            headers: {"Content-Type" => "application/x-www-form-urlencoded"},
+            headers: {"Content-Type" => content_type},
             body: {params_key => attributes})
         success_code = 200
       else
         req = Typhoeus::Request.new(
             endpoint,
             method: :post,
-            headers: {"Content-Type" => "application/x-www-form-urlencoded"},
+            headers: {"Content-Type" => content_type},
             body: {params_key => attributes})
         success_code = 201
       end
@@ -87,6 +87,10 @@ module JsonApiResource
 
     def params_key
       self.class.to_s.underscore
+    end
+
+    def content_type
+      "application/x-www-form-urlencoded"
     end
 
     def add_errors(data)
