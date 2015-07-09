@@ -88,14 +88,14 @@ module JsonApiResource
     def update_params
       {
         method: :put,
-        headers: {"Content-Type" => 'application/x-www-form-urlencode'},
+        headers: {"Content-Type" => 'application/x-www-form-urlencoded'},
       }
     end
 
     def create_params
       {
         method: :post,
-        headers: {"Content-Type" => 'application/x-www-form-urlencode'}
+        headers: {"Content-Type" => 'application/x-www-form-urlencoded'}
       }
     end
 
