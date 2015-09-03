@@ -1,7 +1,9 @@
 require "active_support/all"
 require "typhoeus"
+require 'json_api_resource/exceptions'
 
 module JsonApiResource
+
   module Get
 
     def all(params={}, opts={})
@@ -22,7 +24,7 @@ module JsonApiResource
         when 200
           return newp(JSON.parse(res.body))
         else
-          return nil
+          raise JsonApiResource::BadServiceResponse
         end
       end
 
@@ -41,7 +43,7 @@ module JsonApiResource
           r[:entries].map! { |e| newp(e) }
           return r
         else
-          return nil
+          raise JsonApiResource::BadServiceResponse
         end
       end
 
