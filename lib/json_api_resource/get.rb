@@ -17,7 +17,8 @@ module JsonApiResource
     end
 
     def find(id, params={})
-      req = Typhoeus::Request.new("#{endpoint}/#{id}", method: :get, params: params)
+      request_options = find_request_options.merge(method: :get, params: params)
+      req = Typhoeus::Request.new("#{endpoint}/#{id}", request_options)
 
       req.on_complete do |res|
         case res.code
@@ -34,7 +35,8 @@ module JsonApiResource
     private
 
     def get_list(params={})
-      req = Typhoeus::Request.new(endpoint, method: :get, params: params)
+      request_options = get_list_request_options.merge(method: :get, params: params)
+      req = Typhoeus::Request.new(endpoint, request_options)
 
       req.on_complete do |res|
         case res.code
@@ -48,6 +50,14 @@ module JsonApiResource
       end
 
       req.run
+    end
+
+    def get_list_request_options
+      configuration.get_list_request_options
+    end
+
+    def find_request_options
+      configuration.find_request_options
     end
   end
 end

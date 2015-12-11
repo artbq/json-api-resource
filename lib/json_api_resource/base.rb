@@ -5,8 +5,34 @@ require "json_api_resource/get"
 require "json_api_resource/persistence"
 require "json_api_resource/request"
 
+require 'active_support/configurable'
+
 module JsonApiResource
   class Base
+    class Configuration
+      attr_accessor(
+        :get_list_request_options,
+        :find_request_options,
+      )
+
+      def initialize
+        @get_list_request_options = {}
+        @find_request_options = {}
+      end
+    end
+
+    def self.configuration
+      @configuration ||= Configuration.new
+    end
+
+    def configuration
+      self.class.configuration
+    end
+
+    def self.configure
+      yield configuration
+    end
+
     include ActiveModel::Model
     include ActiveModel::Serializers::JSON
 
