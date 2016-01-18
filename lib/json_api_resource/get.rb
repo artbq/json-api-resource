@@ -24,6 +24,8 @@ module JsonApiResource
         case res.code
         when 200
           return newp(JSON.parse(res.body))
+        when 404
+          return nil
         else
           raise JsonApiResource::BadServiceResponse
         end
